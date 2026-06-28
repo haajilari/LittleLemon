@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api/',include('LittleLemonDRF.urls')),
     path('api/',include('BookListAPI.urls')),
-    path('__debug__/',include("debug)toolbar.urls"))
+    path('__debug__/',include("debug_toolbar.urls"))
 
 ]
