@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'LittlelemonAPI',
     'django_filters',
-    'djoser'
+    'djoser',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
@@ -116,6 +118,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication'
     ],
@@ -123,8 +126,7 @@ REST_FRAMEWORK = {
         'anon':'1/hour',
         'user':'10/minute',
         'ten':'10/minute'
-        
-    }  
+    }
 }
 
 DJOSER = {
