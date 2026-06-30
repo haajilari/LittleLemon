@@ -3,10 +3,10 @@ from .models import MenuItem
 from .serializers import MenuItemSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 from rest_framework import viewsets 
-
+from rest_framework.permissions import IsAuthenticated
 # class MenuItemsView(generics.ListCreateAPIView):
 #     queryset = MenuItem.objects.all()
 #     serializer_class = MenuItemSerializer
@@ -47,8 +47,13 @@ def menu_items(request):
         serialized_item.save()
         return Response(serialized_item.data,status.HTTP_201_CREATED)
 
-@api_view
+@api_view(['GET','POST',"PUT","DELETE"])
 def single_item (request,id):
     item=get_object_or_404(MenuItem,pk=id)
     serialized_item = MenuItemSerializer(item)
     return Response(serialized_item.data)
+
+@api_view()
+@permission_classes([IsAuthenticated])
+def secret(request):
+    return Response({"Message":"Some Secret Message..."})
