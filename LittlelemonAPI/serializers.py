@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import MenuItem, Category
 from decimal import Decimal
-
+import bleach
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,3 +34,5 @@ class MenuItemSerializer(serializers.ModelSerializer):
         if value < 0:
             raise serializers.ValidationError('Stock cannot be negative')
         return value  # Return value if it passes validation
+    def validate_title(self, value):
+        return bleach.clean(value)
