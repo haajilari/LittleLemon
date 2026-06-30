@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework import viewsets 
+
 # class MenuItemsView(generics.ListCreateAPIView):
 #     queryset = MenuItem.objects.all()
 #     serializer_class = MenuItemSerializer
@@ -13,6 +15,11 @@ from rest_framework import status
 #     queryset= MenuItem.objects.all()
 #     serializer_class = MenuItemSerializer
 
+class MenuItemsViewSet(viewsets.ModelViewSet):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    ordering_fields=['price','inventory']
+    search_fields=['title','category__title']
 
 @api_view(['GET','POST'])
 def menu_items(request):
