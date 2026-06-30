@@ -3,10 +3,11 @@ from .models import MenuItem
 from .serializers import MenuItemSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view,permission_classes,throttle_classes
 from rest_framework import status
 from rest_framework import viewsets 
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle
 # class MenuItemsView(generics.ListCreateAPIView):
 #     queryset = MenuItem.objects.all()
 #     serializer_class = MenuItemSerializer
@@ -14,6 +15,9 @@ from rest_framework.permissions import IsAuthenticated
 # class SingleMenuiItemView(generics.RetrieveUpdateAPIView,generics.DestroyAPIView):
 #     queryset= MenuItem.objects.all()
 #     serializer_class = MenuItemSerializer
+
+class TenCallsPerMinute(UserRateThrottle):
+    rate = '10/min'
 
 class MenuItemsViewSet(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
@@ -54,6 +58,21 @@ def single_item (request,id):
     return Response(serialized_item.data)
 
 @api_view()
+@throttle_classes([TenCallsPerMinute])
 @permission_classes([IsAuthenticated])
 def secret(request):
     return Response({"Message":"Some Secret Message..."})
+
+
+@api_view()
+@permission_classes([IsAuthenticated])
+def me(request):
+    return Response(request.user.email)
+
+@api_view()
+@permission_classes([IsAuthenticated])
+def manager_view(request):
+    if request.user.groups.filter(name="Manager").exists():
+        return Response({"message":"Only Manager Should See This"})
+    else:
+        return Response({"Message":"You are not authorized"},403)

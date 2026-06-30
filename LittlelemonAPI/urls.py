@@ -10,6 +10,9 @@ urlpatterns = [
     path('menu-items',views.MenuItemsViewSet.as_view({'get':'list'})),
     path('menu-items/<int:pk>',views.MenuItemsViewSet.as_view({'get':'retrieve'})),
     path('secret/',views.secret),
-    path('api-token-auth/',obtain_auth_token)
-
+    path('api-token-auth/',obtain_auth_token),
+    # path('throttle-check/',views.throttle_check)
+    # path('throttle-chec-auth/',views.throttle_check_auth)
+    path('me/', views.me),
+    path('manager-view/',views.manager_view)
 ]
