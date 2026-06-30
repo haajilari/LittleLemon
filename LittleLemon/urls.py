@@ -23,6 +23,7 @@ urlpatterns = [
     # path('api/',include('LittleLemonDRF.urls')),
     path('api/',include('BookListAPI.urls')),
     path('api/',include('LittlelemonAPI.urls')),
-    path('__debug__/',include("debug_toolbar.urls"))
-
+    path('__debug__/',include("debug_toolbar.urls")),
+    path('auth/',include('djoser.urls')),
+    path('auth/',include('djoser.urls.authtoken')),
 ]

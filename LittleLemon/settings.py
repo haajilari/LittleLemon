@@ -37,11 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "rest_framework",
-    "rest_framework.authtoken",
-    "debug_toolbar",
-    "LittlelemonAPI",
+    'rest_framework',
+    'rest_framework.authtoken',
+    'debug_toolbar',
+    'LittlelemonAPI',
     'django_filters',
+    'djoser'
 ]
 
 MIDDLEWARE = [
@@ -115,15 +116,19 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES':[
-        'rest_framework.authentication.TokenAuthentication'
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
     ],
     'DEFAULT_THROTTLE_RATES':{
         'anon':'1/hour',
         'user':'10/minute',
         'ten':'10/minute'
         
-    }
-    
+    }  
+}
+
+DJOSER = {
+    "USER_ID_FIELD":"username"
 }
 
 # Internationalization
