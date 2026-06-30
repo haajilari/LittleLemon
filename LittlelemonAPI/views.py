@@ -2,11 +2,12 @@ from rest_framework import generics
 from .models import MenuItem
 from .serializers import MenuItemSerializer
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User , Group
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes,throttle_classes
 from rest_framework import status
 from rest_framework import viewsets 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.throttling import UserRateThrottle,AnonRateThrottle
 from .throttles import TenCallsPerMinute
 # class MenuItemsView(generics.ListCreateAPIView):
@@ -95,3 +96,15 @@ def throttle_check(request):
 @throttle_classes([UserRateThrottle])
 def throttle_check_auth(request):
     return Response({"Message":"Message for the logged in users only"})
+
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def managers(request):
+    username = request.data['username']
+    if username:
+        user= get_object_or_404(User, username=username)
+        managers = Group.objects.get(name="Manager")
+        managers.user_set.add(user)
+        return Response({'message':"Manager Found! :)"})
+    return Response({"Message":"Manager is OK! :)"})
